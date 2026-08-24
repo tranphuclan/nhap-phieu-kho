@@ -13,6 +13,6 @@
 // export const DATABASE_NAME = getEnvString("DATABASE_NAME")
 // export const PORT = Number(getEnvString("PORT"))
 
-export const DATABASE_URL = process.env.DATABASE_URL
-export const DATABASE_NAME = process.env.DATABASE_NAME
-export const PORT = Number(process.env.PORT)
+export const DATABASE_URL = process.env.DATABASE_URL as string
+export const DATABASE_NAME = process.env.DATABASE_NAME as string
+export const PORT = Number(process.env.PORT) as number
