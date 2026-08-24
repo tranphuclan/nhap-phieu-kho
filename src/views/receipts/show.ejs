@@ -1,0 +1,155 @@
+<header class="topbar no-print">
+  <a href="/receipts">← Danh sách phiếu nhập kho</a>
+  <div class="topbar-actions">
+    <button type="button" class="ghost danger" data-confirm-delete data-url="/receipts/delete/<%= receipt.id %>"
+      data-document-no="<%= receipt.documentNo %>">
+      <svg class="icon" aria-hidden="true">
+        <use href="#i-trash" />
+      </svg>
+      Xóa phiếu
+    </button>
+    <button type="button" class="ghost" onclick="window.print()">In phiếu</button>
+    <span class="badge">Mẫu số 01-VT</span>
+  </div>
+</header>
+
+<main class="page print-page">
+  <article class="vt-sheet" aria-label="Phiếu nhập kho 01-VT">
+    <div class="vt-top">
+      <div>
+        <p><strong>Đơn vị:</strong>
+          <%= receipt.organizationName || "................................" %>
+        </p>
+        <p><strong>Bộ phận:</strong>
+          <%= receipt.departmentName || "................................" %>
+        </p>
+      </div>
+      <div class="vt-stamp">
+        <p><strong>Mẫu số 01-VT</strong></p>
+        <p class="vt-small">(Ban hành theo Thông tư số 200/2014/TT-BTC<br />ngày 22/12/2014 của Bộ Tài chính)</p>
+      </div>
+    </div>
+
+    <h1 class="vt-title">PHIẾU NHẬP KHO</h1>
+    <p class="vt-date">
+      Ngày <%= dateParts.day %> tháng <%= dateParts.month %> năm <%= dateParts.year %>
+    </p>
+
+    <div class="vt-accounts">
+      <p><strong>Nợ:</strong>
+        <%= receipt.debitAccount %>
+      </p>
+      <p><strong>Có:</strong>
+        <%= receipt.creditAccount %>
+      </p>
+      <p><strong>Số:</strong>
+        <%= receipt.documentNo %>
+      </p>
+    </div>
+
+    <p>
+      - Họ và tên người giao: <%= receipt.deliveredBy || "................................" %>
+    </p>
+    <p>
+      - Theo <%= receipt.sourceDocType || "............" %>
+        số <%= receipt.sourceDocNo || "............" %>
+          <% if (sourceDateParts) { %>
+            ngày <%= sourceDateParts.day %> tháng <%= sourceDateParts.month %> năm <%= sourceDateParts.year %>
+                  <% } else { %>
+                    ngày ...... tháng ...... năm ......
+                    <% } %>
+                      của <%= receipt.sourceDocIssuer || "................................" %>
+    </p>
+    <p>
+      - Nhập tại kho: <%= receipt.warehouseName || "................................" %>
+        địa điểm: <%= receipt.warehouseLocation || "................................" %>
+    </p>
+
+    <table class="vt-table">
+      <thead>
+        <tr>
+          <th rowspan="2">STT</th>
+          <th rowspan="2">Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ, sản phẩm, hàng hóa</th>
+          <th rowspan="2">Mã số</th>
+          <th rowspan="2">Đơn vị tính</th>
+          <th colspan="2">Số lượng</th>
+          <th rowspan="2">Đơn giá</th>
+          <th rowspan="2">Thành tiền</th>
+        </tr>
+        <tr>
+          <th>Theo chứng từ</th>
+          <th>Thực nhập</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% receipt.products.forEach((product)=> { %>
+          <tr>
+            <td class="num">
+              <%= product.lineNo %>
+            </td>
+            <td>
+              <%= product.itemName %>
+            </td>
+            <td>
+              <%= product.itemCode %>
+            </td>
+            <td>
+              <%= product.unit %>
+            </td>
+            <td class="num">
+              <%= formatQty(product.qtyOnDocument) %>
+            </td>
+            <td class="num">
+              <%= formatQty(product.qtyReceived) %>
+            </td>
+            <td class="num">
+              <%= formatVnd(product.unitPrice) %>
+            </td>
+            <td class="num">
+              <%= formatVnd(product.lineAmount) %>
+            </td>
+          </tr>
+          <% }) %>
+            <tr class="vt-sum">
+              <td colspan="4">Cộng</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="num">
+                <%= formatVnd(receipt.totalAmount) %>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+    <p>- Tổng số tiền (viết bằng chữ): <em>
+        <%= receipt.totalAmountInWords %>
+      </em></p>
+    <p>- Số chứng từ gốc kèm theo: <%= receipt.attachedOriginalCount || "................................" %>
+    </p>
+
+    <div class="vt-signs">
+      <span class="vt-sign-date">Ngày <%= dateParts.day %> tháng <%= dateParts.month %> năm <%= dateParts.year %></span>
+      <div>
+        <strong>Người lập phiếu</strong>
+        <span>(Ký, họ tên)</span>
+      </div>
+      <div>
+        <strong>Người giao hàng</strong>
+        <span>(Ký, họ tên)</span>
+        <span class="vt-sign-name">
+          <%= receipt.deliveredBy %>
+        </span>
+      </div>
+      <div>
+        <strong>Thủ kho</strong>
+        <span>(Ký, họ tên)</span>
+      </div>
+      <div>
+        <strong>Kế toán trưởng</strong>
+        <span>(Hoặc bộ phận có nhu cầu nhập)</span>
+        <span>(Ký, họ tên)</span>
+      </div>
+    </div>
+  </article>
+</main>

@@ -1,0 +1,71 @@
+<header class="topbar">
+  <span class="badge">Mẫu số 01-VT</span>
+  <nav class="topbar-actions">
+    <a href="/inventory">Tồn kho</a>
+    <a class="btn primary" href="/receipts/new">Tạo phiếu</a>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="doc-head">
+    <div>
+      <h1>Phiếu nhập kho</h1>
+      <p>Danh sách chứng từ đã lưu. Chọn một phiếu để xem mẫu in 01-VT.</p>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <% if (receipts.length===0) { %>
+      <p class="empty">Chưa có phiếu nào. <a href="/receipts/new">Tạo phiếu nhập kho</a>.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table class="list">
+            <thead>
+              <tr>
+                <th>Số phiếu</th>
+                <th>Ngày</th>
+                <th>Kho</th>
+                <th class="num">Tổng tiền</th>
+                <th class="col-actions"><span class="sr-only">Thao tác</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% receipts.forEach((receipt)=> { %>
+                <tr>
+                  <td><a href="/receipts/<%= receipt.id %>">
+                      <%= receipt.documentNo %>
+                    </a></td>
+                  <td>
+                    <%= receipt.documentDate.split("-").reverse().join("/") %>
+                  </td>
+                  <td>
+                    <%= receipt.warehouseName %>
+                  </td>
+                  <td class="num">
+                    <%= formatVnd(receipt.totalAmount) %>
+                  </td>
+                  <td class="col-actions">
+                    <div class="row-actions">
+                      <a class="icon-btn" href="/receipts/<%= receipt.id %>"
+                        aria-label="Xem phiếu <%= receipt.documentNo %>" title="Xem">
+                        <svg class="icon" aria-hidden="true">
+                          <use href="#i-view" />
+                        </svg>
+                      </a>
+                      <button type="button" class="icon-btn danger" data-confirm-delete
+                        data-url="/receipts/delete/<%= receipt.id %>" data-document-no="<%= receipt.documentNo %>"
+                        aria-label="Xóa phiếu <%= receipt.documentNo %>" title="Xóa">
+                        <svg class="icon" aria-hidden="true">
+                          <use href="#i-trash" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+  </div>
+</main>

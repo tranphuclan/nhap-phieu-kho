@@ -1,0 +1,28 @@
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="i-view" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 12s3.6-7 9.5-7 9.5 7 9.5 7-3.6 7-9.5 7-9.5-7-9.5-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h16" />
+    <path d="M9 7V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8V7" />
+    <path d="M6.5 7l.9 12.2A1.8 1.8 0 0 0 9.2 21h5.6a1.8 1.8 0 0 0 1.8-1.8L17.5 7" />
+    <path d="M10 11v6M14 11v6" />
+  </symbol>
+</svg>
+
+<dialog id="confirm-delete" class="confirm-delete" aria-labelledby="confirm-delete-title" aria-describedby="confirm-delete-desc">
+  <div class="confirm-delete-sheet">
+    <h2 id="confirm-delete-title">Xóa phiếu này?</h2>
+    <p id="confirm-delete-desc">
+      Phiếu số <strong id="confirm-delete-no"></strong> sẽ bị xóa vĩnh viễn, gồm cả các dòng hàng.
+      Không thể hoàn tác.
+    </p>
+    <div class="confirm-delete-actions">
+      <button type="button" class="ghost" data-confirm-cancel>Giữ lại</button>
+      <form id="confirm-delete-form" method="post" action="">
+        <button type="submit" class="btn danger">Xóa phiếu</button>
+      </form>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,44 @@
+<header class="topbar">
+  <a href="/receipts">← Danh sách phiếu nhập kho</a>
+  <span class="badge">Tồn kho</span>
+</header>
+
+<main class="page">
+  <div class="doc-head">
+    <div>
+      <h1>Tồn theo kho</h1>
+      <p>Tổng số lượng thực nhập, nhóm theo kho và mã hàng. Chưa có phiếu xuất.</p>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <% if (rows.length === 0) { %>
+      <p class="empty">Chưa có dữ liệu tồn. Hãy tạo phiếu nhập kho trước.</p>
+    <% } else { %>
+      <div class="table-wrap">
+        <table class="list">
+          <thead>
+            <tr>
+              <th>Kho</th>
+              <th>Mã hàng</th>
+              <th>Tên hàng</th>
+              <th>ĐVT</th>
+              <th class="num">Tồn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.forEach((row) => { %>
+              <tr>
+                <td><%= row.warehouseName %></td>
+                <td><%= row.itemCode %></td>
+                <td><%= row.itemName %></td>
+                <td><%= row.unit %></td>
+                <td class="num"><%= formatQty(row.quantityInventory) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</main>

@@ -1,0 +1,137 @@
+<header class="topbar">
+  <a href="/receipts">← Danh sách phiếu nhập kho</a>
+  <span class="badge">Mẫu số 01-VT</span>
+</header>
+
+<main class="page">
+  <div class="doc-head">
+    <div>
+      <h1>Tạo phiếu nhập kho</h1>
+    </div>
+    <div class="meta">
+      <strong>Số: <%= suggestedDocumentNo %></strong>
+    </div>
+  </div>
+
+  <% if (errors && errors.length) { %>
+    <ul class="errors" role="alert">
+      <% errors.forEach((message) => { %>
+        <li><%= message %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form class="sheet" action="/receipts" method="post">
+    <section class="part" aria-labelledby="part-info">
+      <h2 id="part-info">Thông tin phiếu</h2>
+      <div class="grid">
+        <label class="c6">Đơn vị
+          <input name="organization_name" value="<%= values.organizationName %>" required />
+        </label>
+        <label class="c6">Bộ phận
+          <input name="department_name" value="<%= values.departmentName %>" required />
+        </label>
+        <label class="c4">Ngày nhập
+          <input type="date" name="document_date" value="<%= values.documentDate %>" required />
+        </label>
+        <label class="c4">Số phiếu
+          <input name="document_no" value="<%= values.documentNo %>" required />
+        </label>
+        <label class="c4">Nợ
+          <input name="debit_account" value="<%= values.debitAccount %>" placeholder="156" required />
+        </label>
+        <label class="c4">Kho nhập
+          <input name="warehouse_name" value="<%= values.warehouseName %>" required />
+        </label>
+        <label class="c4">Địa điểm
+          <input name="warehouse_location" value="<%= values.warehouseLocation %>" required />
+        </label>
+        <label class="c4">Có
+          <input name="credit_account" value="<%= values.creditAccount %>" placeholder="331" required />
+        </label>
+        <label class="c6">Họ tên người giao
+          <input name="delivered_by" value="<%= values.deliveredBy %>" placeholder="Nguyễn Văn A" required />
+        </label>
+        <label class="c6">Theo chứng từ
+          <input name="source_doc_type" value="<%= values.sourceDocType %>" placeholder="Hóa đơn / biên bản" required />
+        </label>
+        <label class="c4">Số chứng từ
+          <input name="source_doc_no" value="<%= values.sourceDocNo %>" placeholder="HD-123" required />
+        </label>
+        <label class="c4">Ngày chứng từ
+          <input type="date" name="source_doc_date" value="<%= values.sourceDocDate %>" required />
+        </label>
+        <label class="c4">Của
+          <input name="source_doc_issuer" value="<%= values.sourceDocIssuer %>" placeholder="Công ty ABC" required />
+        </label>
+        <label class="c12 inline">Số chứng từ gốc kèm theo
+          <input name="attached_original_count" value="<%= values.attachedOriginalCount %>" required />
+        </label>
+      </div>
+    </section>
+
+    <section class="part" aria-labelledby="part-lines">
+      <h2 id="part-lines">Chi tiết hàng hóa</h2>
+      <div class="table-wrap">
+        <table class="lines" id="lines">
+          <colgroup>
+            <col class="col-stt" />
+            <col class="col-name" />
+            <col class="col-code" />
+            <col class="col-unit" />
+            <col class="col-qty" />
+            <col class="col-qty" />
+            <col class="col-price" />
+            <col class="col-amount" />
+            <col class="col-act" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">STT</th>
+              <th rowspan="2">Tên hàng</th>
+              <th rowspan="2">Mã số</th>
+              <th rowspan="2">ĐVT</th>
+              <th colspan="2" class="qty-group">Số lượng</th>
+              <th rowspan="2">Đơn giá</th>
+              <th rowspan="2">Thành tiền</th>
+              <th rowspan="2"></th>
+            </tr>
+            <tr>
+              <th class="qty-sub">Theo CT</th>
+              <th class="qty-sub">Thực nhập</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% values.products.forEach((product, index) => { %>
+              <tr>
+                <td class="stt"><%= index + 1 %></td>
+                <td><input name="item_name[]" value="<%= product.itemName %>" required /></td>
+                <td><input name="item_code[]" value="<%= product.itemCode %>" required /></td>
+                <td><input name="unit[]" value="<%= product.unit %>" required /></td>
+                <td><input class="num qty-doc" name="qty_on_document[]" value="<%= product.qtyOnDocument %>" inputmode="decimal" required /></td>
+                <td><input class="num qty-recv" name="qty_received[]" value="<%= product.qtyReceived %>" inputmode="decimal" required /></td>
+                <td><input class="num price" name="unit_price[]" value="<%= product.unitPrice %>" inputmode="numeric" required /></td>
+                <td class="amount">0</td>
+                <td class="act"><button type="button" class="row-remove">Xóa</button></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-actions">
+        <button type="button" class="ghost" id="add-row">Thêm dòng hàng</button>
+        <div class="totals">
+          <span>Cộng thành tiền</span>
+          <div class="sum" id="grand">0</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <a class="btn" href="/receipts">Hủy</a>
+      <button type="submit" class="btn primary">Lưu phiếu</button>
+    </div>
+  </form>
+</main>
+
+<script src="/form.js"></script>
